@@ -7,12 +7,12 @@ Class Rect Extends Vector
 	Private
 
 	Field _width:Float
-	Field _height:Float									
-	
+	Field _height:Float
+
 	Field _x1:Float, _y1:Float, _x2:Float, _y2:Float	'Rect corners
-	Field pivotX:Float = 0						
-	Field pivotY:Float = 0	
-	
+	Field pivotX:Float = 0
+	Field pivotY:Float = 0
+
 '   	Field offset := New Vector()
 
 	Public
@@ -36,7 +36,7 @@ Class Rect Extends Vector
 		Set( x,y )
 		Size( _width, _height )
 	End
-	
+
 	Method Set:Void(x:Float, y:Float)
 		Self.x = x
 		Self.y = y
@@ -56,7 +56,7 @@ Class Rect Extends Vector
 		Self._x2 = _x1 + _width
 		Self._y2 = _y1 + _height
 	End
-	
+
 	Method Copy:Void( other:Vector )
 		Self.x = other.x
 		Self.y = other.y
@@ -97,7 +97,7 @@ Class Rect Extends Vector
 		Self._x1 = x - pivotX
 		Self._x2 = _x1 + _width
 	End
-	
+
 	Method SetY:Void( y:Float )
 		Self.y = y
 		Self._y1 = y - pivotY
@@ -107,11 +107,11 @@ Class Rect Extends Vector
 	Method SetY:Void( y:Float, _height:Float )
 		Self.y = y
 		Self._height = _height
-		Self.pivotY = _height * handle.y 
+		Self.pivotY = _height * handle.y
 		Self._y1 = y - pivotY
 		Self._y2 = _y1 + _height
 	End
-	
+
 	Method PositionByCorner:Void( __x1:Float, __y1:Float )
 		Set( __x1 + pivotX, __y1 + pivotY )
 	End
@@ -119,7 +119,7 @@ Class Rect Extends Vector
 	Method Move:Void( deltaX:Float, deltaY:Float )
 		Set( self.x + deltaX, self.y +deltaY )
 	End
-	
+
 	Method Contains:Bool(_x:Float, _y:Float)
 		If _x > _x1
 			If _x < _x2
@@ -132,7 +132,7 @@ Class Rect Extends Vector
 		End
 		Return False
 	End
-	
+
 	Method Overlaps:Bool( rect:Rect )
 		If rect._x2 > _x1
 			If rect._x1 < _x2
@@ -144,6 +144,23 @@ Class Rect Extends Vector
 			End
 		End
 		Return false
+	End
+
+	Method SnapToPixel:Void()
+		x = Round( x )
+		y = Round( y )
+		_width = Round( _width )
+		_height = Round( _height )
+		pivotX = Round( _width * handle.x )
+		pivotY = Round( _height * handle.y )
+		_x1 = Round( x - pivotX )
+		_y1 = Round( y - pivotY )
+		_x2 = Round( _x1 + _width )
+		_y2 = Round( _y1 + _height )
+	End
+
+	Function Round:Float(number:Float)
+		If number - Int(number) > 0.5 Then Return Ceil(number) Else Return Floor(number)
 	End
 
 End
